@@ -14,18 +14,20 @@ This project provides Python utilities to test the gesture recognition API endpo
 - `send_image.py` - Script for sending a single image to the gesture detection API
 - `send_image_directory.py` - Script for processing multiple images in a directory
 - `stream.py` - Local webcam streaming server for testing real-time detection
+- `requirements.txt` - List of Python dependencies required for these scripts
 
 ## Requirements
 
 - Python 3.6 or higher
-- Libraries:
-  - requests (for API communication)
-  - json (for result processing)
-  - pathlib (for file path handling)
-  - aiohttp (for streaming server)
-  - opencv-python (for webcam capture)
+- Required libraries are listed in `requirements.txt`
 
-Install the required dependencies:
+Install all dependencies easily with:
+
+```bash
+pip install -r requirements.txt
+```
+
+Alternatively, you can install the dependencies manually:
 
 ```bash
 pip install requests pathlib aiohttp opencv-python
@@ -162,6 +164,16 @@ The API can detect various hand gestures, including:
 - Make sure your webcam is properly connected and accessible
 - Check if ports 8080 (stream server) and 8000 (API) are not blocked by firewall
 - For cross-machine testing, replace 'localhost' with your machine's IP address
+
+## Quick Setup Guide
+
+For a quick start:
+
+1. Clone this repository
+2. Install dependencies: `pip install -r requirements.txt`
+3. Make sure your Docker container with the gesture recognition API is running
+4. Edit the `image_path` or `directory_path` in the respective scripts
+5. Run one of the scripts to begin testing
 
 ## Contributing
 

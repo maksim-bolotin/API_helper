@@ -1,0 +1,4 @@
+requests>=2.25.0
+aiohttp>=3.7.4
+opencv-python>=4.5.0
+pathlib>=1.0.1
