@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Model files
+*.pt
+*.onnx
+
+# Uploaded files
+uploads/
+
+tests/test_data/
+
+*.db
+*.tar
+
+app/model/*.task
