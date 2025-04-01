@@ -8,6 +8,7 @@ This project provides Python utilities to test the gesture recognition API endpo
 - Send individual images for gesture detection
 - Process entire directories of images in batch
 - Stream webcam video for real-time gesture detection testing
+- Use the detection function as an internal API
 
 ## Files
 
@@ -27,60 +28,52 @@ Install all dependencies easily with:
 pip install -r requirements.txt
 ```
 
-Alternatively, you can install the dependencies manually:
-
-```bash
-pip install requests pathlib aiohttp opencv-python
-```
-
 ## Usage
 
 ### Single Image Processing
 
-To process a single image and get detection results:
+To process a single image and get detection results using command-line arguments:
 
 ```bash
-python send_image.py
+python send_image.py path/to/your/image.jpg
 ```
 
-Edit the `image_path` variable in the script to point to your image file:
-
-```python
-image_path = "path/to/your/image.jpg"
+Optional arguments:
+```bash
+python send_image.py path/to/your/image.jpg --url http://your-server:8000/detect/gesture/image
+python send_image.py path/to/your/image.jpg --return-image
 ```
 
 The script will:
 1. Send the image to the gesture detection API
 2. Save the JSON response as `[image_name]_result.json`
-3. Display the detected gestures in the console
+3. If `--return-image` is specified, also save the processed image with gesture markers as `[image_name]_processed.jpg`
+4. Display the detected gestures in the console
 
 ### Directory Batch Processing
 
-To process all images in a directory:
+To process all images in a directory using command-line arguments:
 
 ```bash
-python send_image_directory.py
+python send_image_directory.py path/to/your/images/directory
 ```
 
-Edit the `directory_path` variable in the script to specify your images directory:
-
-```python
-directory_path = "path/to/your/images"
+Optional arguments:
+```bash
+python send_image_directory.py path/to/images --url http://your-server:8000/detect/gesture/image
+python send_image_directory.py path/to/images --delay 1.0
+python send_image_directory.py path/to/images --formats jpg,png
+python send_image_directory.py path/to/images --output path/to/results
+python send_image_directory.py path/to/images --return-images
 ```
 
 The script will:
-1. Find all JPG, JPEG, and PNG images in the specified directory
+1. Find all images with the specified formats in the directory
 2. Process each image sequentially
 3. Save individual results as JSON files
-4. Create a summary file `detection_summary.json` with all detection results
-5. Display a summary of detected gestures for each image
-
-#### Configuration Options
-
-You can customize the behavior by modifying these variables:
-- `api_url` - API endpoint URL (default: "http://localhost:8000/detect/gesture/image")
-- `image_extensions` - File types to process (default: '.jpg', '.jpeg', '.png')
-- `delay` - Time delay between processing images (default: 0.5 seconds)
+4. If `--return-images` is specified, save processed images with gesture markers in a `processed_images` subdirectory
+5. Create a summary file `detection_summary.json` with all detection results
+6. Display a summary of detected gestures for each image
 
 ### Video Streaming
 
@@ -101,14 +94,35 @@ You can use this stream URL for testing real-time gesture detection with the API
 curl -X POST "http://localhost:8000/detect/gesture/stream?stream_url=http://localhost:8080/video"
 ```
 
+### Using as an Internal API
+
+The updated `send_image.py` includes a function that can be imported and used in other scripts:
+
+```python
+from send_image import detect_gesture_as_function
+
+# Using with file path
+result = detect_gesture_as_function("path/to/image.jpg")
+
+# Using with file path and getting processed image
+result, image_bytes = detect_gesture_as_function("path/to/image.jpg", return_image_flag=True)
+
+# Using with image bytes
+with open("path/to/image.jpg", "rb") as f:
+    image_data = f.read()
+result = detect_gesture_as_function(image_data)
+```
+
+This function can return either just the detection results (as a dictionary) or both the results and the processed image (as a tuple).
+
 ## Docker Configuration
 
 These scripts are designed to work with a gesture recognition API running in Docker at `http://localhost:8000`. 
 
-If your Docker container uses a different address or port, update the `api_url` variable in the scripts:
+If your Docker container uses a different address or port, you can specify it using the `--url` parameter:
 
-```python
-api_url = "http://your-docker-host:port/detect/gesture/image"
+```bash
+python send_image.py path/to/image.jpg --url http://your-docker-host:port/detect/gesture/image
 ```
 
 ## API Endpoints
@@ -148,6 +162,14 @@ The API can detect various hand gestures, including:
 - Pointing
 - ILoveYou sign (combination of the ASL signs for I, L, and Y)
 
+## Error Handling
+
+The scripts include robust error handling:
+- Image decoding errors are properly caught and reported
+- Connection issues to the API are handled gracefully
+- When image visualization fails, JSON results are still returned
+- Detailed error messages help diagnose issues with the API or images
+
 ## Troubleshooting
 
 ### Connection Issues
@@ -172,13 +194,20 @@ For a quick start:
 1. Clone this repository
 2. Install dependencies: `pip install -r requirements.txt`
 3. Make sure your Docker container with the gesture recognition API is running
-4. Edit the `image_path` or `directory_path` in the respective scripts
-5. Run one of the scripts to begin testing
+4. Run one of the scripts with your desired parameters:
+   ```bash
+   python send_image.py path/to/image.jpg
+   # or
+   python send_image_directory.py path/to/images/directory
+   # Get processed images with visualized gestures:
+   python send_image.py path/to/image.jpg --return-image
+   # Process a directory and get all processed images:
+   python send_image_directory.py path/to/images/directory --return-images
+   ```
 
 ## Contributing
 
 Feel free to extend and improve these utilities. Possible enhancements:
-- Command-line arguments for easier configuration
-- GUI for visualizing detection results
+- GUI for visualizing detection results in real-time
 - Integration with other gesture recognition services
-- Real-time detection visualization
+- Support for additional file formats and detection options
