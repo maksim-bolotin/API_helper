@@ -52,7 +52,7 @@ def detect_gesture_in_image(image_path, api_url="http://localhost:8000/detect/ge
 
 if __name__ == "__main__":
     # Example usage
-    image_path = "C:/Users/vk071/Downloads/front-view-hand-showing-palm.jpg"
+    image_path = "path/to/your/image"
     result = detect_gesture_in_image(image_path)
 
     if result:

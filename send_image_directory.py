@@ -113,7 +113,7 @@ def process_image_directory(directory_path, api_url="http://localhost:8000/detec
 
 if __name__ == "__main__":
     # Example usage
-    directory_path = "C:/Users/vk071/Downloads"
+    directory_path = "path/to/your/images"
 
     # Optional: customize API URL if needed
     api_url = "http://localhost:8000/detect/gesture/image"
