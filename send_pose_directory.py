@@ -15,7 +15,7 @@ from typing import Dict, List, Tuple, Optional, Union, Any
 
 def detect_pose_in_image(
     image_path: str, 
-    api_url: str = "http://localhost:8000/detect/pose/image",
+    api_url: str = "http://localhost:8001/detect/pose/image",
     return_image: bool = False,
     save_image: bool = False,
     save_results: bool = False
@@ -104,7 +104,7 @@ def detect_pose_in_image(
 
 def detect_pose_in_video(
     video_path: str,
-    api_url: str = "http://localhost:8000/detect/pose/video",
+    api_url: str = "http://localhost:8001/detect/pose/video",
     return_video: bool = False,
     save_video: bool = False,
     save_results: bool = False
@@ -187,8 +187,8 @@ def detect_pose_in_video(
 
 def process_directory(
     directory_path: str,
-    api_url_image: str = "http://localhost:8000/detect/pose/image",
-    api_url_video: str = "http://localhost:8000/detect/pose/video",
+    api_url_image: str = "http://localhost:8001/detect/pose/image",
+    api_url_video: str = "http://localhost:8001/detect/pose/video",
     image_extensions: Tuple[str, ...] = ('.jpg', '.jpeg', '.png'),
     video_extensions: Tuple[str, ...] = ('.mp4', '.avi', '.mov', '.wmv', '.mkv'),
     delay: float = 0.5,
@@ -493,9 +493,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process multiple files in a directory for pose detection')
     
     parser.add_argument('directory_path', help='Path to the directory containing media files to process')
-    parser.add_argument('--image-url', default="http://localhost:8000/detect/pose/image",
+    parser.add_argument('--image-url', default="http://localhost:8001/detect/pose/image",
                         help='URL of the pose detection image API endpoint')
-    parser.add_argument('--video-url', default="http://localhost:8000/detect/pose/video",
+    parser.add_argument('--video-url', default="http://localhost:8001/detect/pose/video",
                         help='URL of the pose detection video API endpoint')
     parser.add_argument('--delay', type=float, default=0.5,
                         help='Delay between processing files (seconds)')

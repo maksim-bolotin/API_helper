@@ -13,7 +13,7 @@ from typing import Dict, Tuple, Optional, Union, Any
 
 def detect_pose_in_image(
     image_path: str, 
-    api_url: str = "http://localhost:8000/detect/pose/image",
+    api_url: str = "http://localhost:8001/detect/pose/image",
     return_image: bool = False,
     save_image: bool = False,
     save_results: bool = False
@@ -174,7 +174,7 @@ def process_pose_result(result: Dict, image_path: str, image_bytes: Optional[byt
 
 def detect_pose_in_video(
     video_path: str,
-    api_url: str = "http://localhost:8000/detect/pose/video",
+    api_url: str = "http://localhost:8001/detect/pose/video",
     return_video: bool = False,
     save_video: bool = False,
     save_results: bool = False
@@ -360,7 +360,7 @@ if __name__ == "__main__":
     if args.url:
         api_url = args.url
     else:
-        api_url = f"http://localhost:8000/detect/pose/{mode}"
+        api_url = f"http://localhost:8001/detect/pose/{mode}"
     
     try:
         # Process based on mode
